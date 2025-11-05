@@ -1,62 +1,70 @@
 import logging
-from aiogram import types, Router, F
+from aiogram import Router, types, F
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery
-from kb.kb_menu import build_keyboard, menu_paths
-from scripts.helper import readMenu, readData, fill_menu, get_menu_level
+
+from kb.kb_menu  import build_keyboard
+from scripts.helper import readMenu, readData, get_menu_level, is_final_value
 
 logger = logging.getLogger(__name__)
 menu_router = Router()
 
-# Загружаем меню и тексты
 menu_json = readMenu()
 data_json = readData()
-menu = fill_menu(menu_json, data_json)
+user_paths = {}  # user_id -> путь (список ключей)
 
+def format_breadcrumbs(path_list: list[str]) -> str:
+    """Создаёт красивую строку вида 'FAQ → Начало игры'"""
+    if not path_list:
+        return "📜 Главное меню"
+    return "🧭 " + " → ".join(path_list)
 
-# === /start ===
 @menu_router.message(CommandStart())
-async def start_message(message: types.Message):
-    await message.answer("Выберите раздел:", reply_markup=build_keyboard(menu))
+async def start_menu(msg: types.Message):
+    user_paths[msg.from_user.id] = []
+    root = menu_json
+    keyboard = build_keyboard(root, [])
+    await msg.answer(format_breadcrumbs([]), reply_markup=keyboard)
 
-
-# === Обработка нажатий ===
-@menu_router.callback_query()
-async def handle_callback(callback: CallbackQuery):
+@menu_router.callback_query(F.data)
+async def navigate_menu(callback: CallbackQuery):
+    user_id = callback.from_user.id
     data = callback.data
 
-    # Кнопка "назад"
-    if data.startswith("back_"):
-        back_hash = data.replace("back_", "")
-        parent_path = None
-        for full_path in menu_paths.values():
-            if abs(hash(full_path)) == int(back_hash):
-                parts = full_path.split(">")
-                parent_path = ">".join(parts[:-1])
-                break
-        level = get_menu_level(menu, parent_path)
-        text = "Выберите раздел:" if not parent_path else f"Раздел: {parts[-2]}"
-        await callback.message.edit_text(text, reply_markup=build_keyboard(level, parent_path))
-        return
-    # Кнопка Главное меню
-    if data == "back_":  # пустой hash
+    # Назад
+    if data == "BACK":
+        if user_id in user_paths and user_paths[user_id]:
+            user_paths[user_id].pop()
+        current_level = get_menu_level(menu_json, user_paths[user_id])
+        keyboard = build_keyboard(current_level, user_paths[user_id])
         await callback.message.edit_text(
-            "Выберите раздел:",
-            reply_markup=build_keyboard(menu)
+            format_breadcrumbs(user_paths[user_id]), reply_markup=keyboard
         )
-        return
-    # Обычная кнопка
-    full_path = menu_paths.get(data)
-    if not full_path:
-        await callback.answer("Ошибка: пункт не найден", show_alert=True)
+        await callback.answer()
         return
 
-    level = get_menu_level(menu, full_path)
-    if isinstance(level, dict):  # есть подменю
-        await callback.message.edit_text(f"Раздел: {full_path.split('>')[-1]}", reply_markup=build_keyboard(level, full_path))
-    else:
+    path_list = data.split(">")
+    current_level = get_menu_level(menu_json, path_list)
+
+    if current_level is None:
+        await callback.answer("Ошибка пути", show_alert=True)
+        return
+
+    user_paths[user_id] = path_list
+
+    if is_final_value(current_level):
+        key = current_level
+        text = data_json.get(key, f"❌ Текст для '{key}' не найден.")
+        breadcrumb = format_breadcrumbs(path_list)
         await callback.message.edit_text(
-            f"<b>{full_path.split('>')[-1]}</b>\n\n{level}",
-            parse_mode="HTML",
-            reply_markup=build_keyboard({}, path=full_path, add_main=True)  # пустой dict + кнопка "Главное меню"
+            f"{breadcrumb}\n\n{text}",
+            reply_markup=build_keyboard({}, path_list)
         )
+    else:
+        keyboard = build_keyboard(current_level, path_list)
+        await callback.message.edit_text(
+            format_breadcrumbs(path_list),
+            reply_markup=keyboard
+        )
+
+    await callback.answer()

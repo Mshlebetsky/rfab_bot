@@ -1,39 +1,23 @@
 import json
-import os
 
-def read_json(path: str):
+def readMenu(path="menu/menu.json"):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def readMenu():
-    return read_json("menu/menu.json")
+def readData(path="db/data.json"):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-def readData():
-    return read_json("db/data.json")
-
-def fill_menu(menu: dict, data: dict):
-    """
-    Рекурсивно заменяет пустые строки на тексты из data.json (если есть),
-    а вложенные dict оставляет как есть.
-    """
-    result = {}
-    for key, value in menu.items():
-        if isinstance(value, dict):
-            result[key] = fill_menu(value, data)
-        elif value == "":
-            # Если текст есть в data.json, вставляем его
-            result[key] = data.get(key, f"Нет данных для '{key}'")
+def get_menu_level(menu, path_list):
+    """Возвращает текущий уровень меню по пути"""
+    current = menu
+    for key in path_list:
+        if isinstance(current, dict) and key in current:
+            current = current[key]
         else:
-            result[key] = value
-    return result
+            return None
+    return current
 
-
-def get_menu_level(menu_dict, path: str):
-    """Рекурсивно достаёт уровень меню по пути 'A>B>C'."""
-    if not path:
-        return menu_dict
-    parts = path.split(">")
-    node = menu_dict
-    for part in parts:
-        node = node.get(part.strip(), {})
-    return node
+def is_final_value(node):
+    """Проверяет, является ли значение финальным (строка)"""
+    return isinstance(node, str)
