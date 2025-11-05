@@ -60,7 +60,6 @@ async def main():
             break
         await asyncio.sleep(1)
 
-#dfasf
 if __name__ == "__main__":
     try:
         asyncio.run(main())
