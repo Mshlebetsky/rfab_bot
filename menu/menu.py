@@ -1,9 +1,10 @@
-import logging
+import logging, hashlib
 from aiogram import Router, types, F
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery
 
 from kb.kb_menu  import build_keyboard
+from menu.path_manager import path_map  # ✅ без цикла
 from scripts.helper import readMenu, readData, get_menu_level, is_final_value
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,18 @@ def format_breadcrumbs(path_list: list[str]) -> str:
     if not path_list:
         return "📜 Главное меню"
     return "🧭 " + " → ".join(path_list)
+
+
+# Глобальное хранилище для всех callback → путь
+# path_map = {}
+#
+# def register_path(path_list):
+#     """Создаёт короткий hash для callback_data и сохраняет соответствие"""
+#     path_str = ">".join(path_list)
+#     hash_id = hashlib.md5(path_str.encode()).hexdigest()[:10]
+#     path_map[hash_id] = path_list
+#     return hash_id
+
 
 @menu_router.message(CommandStart())
 async def start_menu(msg: types.Message):
@@ -43,9 +56,13 @@ async def navigate_menu(callback: CallbackQuery):
         await callback.answer()
         return
 
-    path_list = data.split(">")
-    current_level = get_menu_level(menu_json, path_list)
+    # Декодируем hash → путь
+    path_list = path_map.get(data)
+    if not path_list:
+        await callback.answer("❌ Ошибка пути", show_alert=True)
+        return
 
+    current_level = get_menu_level(menu_json, path_list)
     if current_level is None:
         await callback.answer("Ошибка пути", show_alert=True)
         return
@@ -68,3 +85,4 @@ async def navigate_menu(callback: CallbackQuery):
         )
 
     await callback.answer()
+
