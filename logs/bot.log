@@ -2760,3 +2760,13 @@ KeyError: 435946390
 2025-11-07 01:01:23,915 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
 2025-11-07 01:01:23,915 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
 2025-11-07 01:01:24,182 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 01:01:25,878 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 01:01:26,176 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 01:04:49,517 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 01:04:49,517 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 01:04:49,775 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 01:04:51,519 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 01:04:51,827 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 01:08:13,180 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 01:08:13,180 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 01:08:13,438 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
