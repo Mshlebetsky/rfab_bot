@@ -2477,3 +2477,286 @@ aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: BUTTO
 2025-11-06 22:59:12,773 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
 2025-11-06 22:59:12,773 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
 2025-11-06 22:59:13,029 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 22:59:14,863 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 22:59:15,181 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:05:03,258 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:05:03,258 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:05:03,516 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:05:05,257 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:05:05,659 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:05:39,973 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:05:39,973 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:05:40,224 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:05:41,922 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:05:42,229 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:05:47,506 [ERROR] [aiogram.event] Cause exception while process update id=719443320 by bot id=8563450942
+TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: Unsupported start tag "center" at byte offset 37
+Traceback (most recent call last):
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\fsm\middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        observer=observer, update_type=update_type, event=telegram_event, **data
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 174, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        observer=observer, update_type=update_type, event=telegram_event, **data
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\menu\menu.py", line 76, in navigate_menu
+    await callback.message.edit_text(
+    ...<2 lines>...
+    )
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\methods\base.py", line 84, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\client\bot.py", line 485, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\client\session\base.py", line 254, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\client\session\aiohttp.py", line 185, in make_request
+    response = self.check_response(
+        bot=bot, method=method, status_code=resp.status, content=raw_result
+    )
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\client\session\base.py", line 120, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: Unsupported start tag "center" at byte offset 37
+2025-11-06 23:05:59,897 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:05:59,898 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:06:00,157 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:06:01,896 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:06:02,201 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:08:47,493 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:08:47,493 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:08:47,748 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:08:49,468 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:08:49,799 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:13:50,226 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:13:50,226 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:13:50,478 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:13:52,175 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:13:52,564 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:15:40,306 [ERROR] [aiogram.event] Cause exception while process update id=719443332 by bot id=8563450942
+KeyError: 435946390
+Traceback (most recent call last):
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\fsm\middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        observer=observer, update_type=update_type, event=telegram_event, **data
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 174, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        observer=observer, update_type=update_type, event=telegram_event, **data
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\.venv\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Mihail\Documents\python\Rfab_Library\menu\menu.py", line 51, in navigate_menu
+    current_level = get_menu_level(menu_json, user_paths[user_id])
+                                              ~~~~~~~~~~^^^^^^^^^
+KeyError: 435946390
+2025-11-06 23:16:00,298 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:16:00,299 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:16:00,563 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:16:22,781 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:16:23,090 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:16:52,023 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:16:52,023 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:16:52,284 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:16:53,975 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:16:54,286 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:18:38,406 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:18:38,406 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:18:38,669 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:18:40,378 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:18:40,731 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:23:20,583 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:23:20,583 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:23:20,846 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:23:22,567 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:23:22,948 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:25:51,203 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:25:51,203 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:25:51,461 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:25:53,113 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:25:53,419 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:26:55,787 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:26:55,787 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:26:56,038 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:26:57,625 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:26:57,938 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:28:17,212 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:28:17,212 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:28:17,472 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:28:19,001 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:28:19,336 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:29:32,068 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:29:32,068 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:29:32,333 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:29:34,030 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:29:34,344 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:33:18,950 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:33:18,950 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:33:19,207 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:33:20,965 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:33:21,370 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:43:51,648 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:43:51,648 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:43:51,914 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:43:53,543 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:43:53,927 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:53:58,481 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:53:58,482 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:53:58,738 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:54:00,496 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:54:00,860 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-06 23:58:22,268 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-06 23:58:22,268 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-06 23:58:22,526 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-06 23:58:24,197 [INFO] [root] ✅ Логирование инициализировано
+2025-11-06 23:58:24,517 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:00:09,376 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:00:09,377 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:00:09,636 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:00:11,312 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:00:11,617 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:04:18,837 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:04:18,837 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:04:19,089 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:04:20,798 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:04:21,164 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:06:04,301 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:06:04,301 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:06:04,554 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:06:06,277 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:06:06,587 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:06:24,974 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:06:24,974 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:06:25,239 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:06:26,973 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:06:27,299 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:15:35,958 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:15:35,958 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:15:36,221 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:15:37,832 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:15:38,182 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:27:27,495 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:27:27,495 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:27:27,759 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:27:29,393 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:27:29,778 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 00:53:53,830 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 00:53:53,830 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 00:53:54,093 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 00:53:55,800 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 00:53:56,183 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 01:00:05,880 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 01:00:05,880 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 01:00:06,140 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 01:00:07,894 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 01:00:08,227 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 01:00:35,718 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 01:00:35,718 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 01:00:35,975 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
+2025-11-07 01:00:37,649 [INFO] [root] ✅ Логирование инициализировано
+2025-11-07 01:00:38,010 [INFO] [__main__] ▶️ Запуск long polling
+2025-11-07 01:01:23,915 [ERROR] [aiogram.dispatcher] Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-11-07 01:01:23,915 [WARNING] [aiogram.dispatcher] Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8563450942)
+2025-11-07 01:01:24,182 [INFO] [__main__] 🛑 Бот остановлен вручную (KeyboardInterrupt)
