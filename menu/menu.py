@@ -1,85 +1,99 @@
-import logging, hashlib
-from aiogram import Router, types, F
-from aiogram.filters import CommandStart
-from aiogram.types import CallbackQuery
+from __future__ import annotations
+import sqlite3
+from typing import List, Optional
+import logging
+from aiogram import types, Router
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.filters import Command
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from db.db import get_children, get_node, get_item
 
-from kb.kb_menu  import build_keyboard
-from menu.path_manager import path_map  # ✅ без цикла
-from scripts.helper import readMenu, readData, get_menu_level, is_final_value
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+# --------------------------- MENU MARKUP GENERATOR ---------------------------
+
+def build_menu_markup(nodes: List[sqlite3.Row], include_back: bool = False,
+                      back_to: Optional[int] = None) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+
+    # добавляем кнопки меню
+    for node in nodes:
+        builder.button(text=node['title'], callback_data=f'menu:{node["id"]}')
+
+    # расположение по 2 кнопки в строке
+    builder.adjust(2)
+
+    # добавляем кнопку "Назад" на отдельной строке
+    if include_back:
+        if back_to is None:
+            builder.row(InlineKeyboardButton(text='⬅️ Назад', callback_data='menu:root'))
+        else:
+            builder.row(InlineKeyboardButton(text='⬅️ Назад', callback_data=f'menu:{back_to}'))
+
+    return builder.as_markup()
+
+
 menu_router = Router()
 
-menu_json = readMenu()
-data_json = readData()
-user_paths = {}  # user_id -> путь (список ключей)
-text = (
-    "Сделано:\n"
-    "✅FAQ\n✅Персонаж\n✅Камни\n✅Боги\n"
-    "Частично сделано(посмотреть как будет выглядеть): \n"
-    "⌛️Навыки → Кузнечное дело\n"
-    "⌛️Навыки → Тяжёлая броня\n"
-    "⌛️Экипировка → Одноручное → Одноручные Мечи (все из них)\n"
-    "Всё остальное пока ожидает своей очереди или деплоя на сервер"
-)
-def format_breadcrumbs(path_list: list[str]) -> str:
-    """Создаёт красивую строку вида 'FAQ → Начало игры'"""
-    if not path_list:
-        return f"📜 Главное меню\n\n{text}"
-    return "🧭 " + " → ".join(path_list)
+
+@menu_router.message(Command(commands=['start']))
+async def cmd_start(message: types.Message):
+    # show top-level menu
+    nodes = get_children(None)
+    markup = build_menu_markup(nodes)
+    await message.answer('Главное меню:', reply_markup=markup)
 
 
-@menu_router.message(CommandStart())
-async def start_menu(msg: types.Message):
-    user_paths[msg.from_user.id] = []
-    root = menu_json
-    keyboard = build_keyboard(root, [])
-    await msg.answer(format_breadcrumbs([]), reply_markup=keyboard)
+@menu_router.callback_query(lambda c: c.data and c.data.startswith('menu:'))
+async def callback_menu(cb: types.CallbackQuery):
+    data = cb.data
 
-@menu_router.callback_query(F.data)
-async def navigate_menu(callback: CallbackQuery):
-    user_id = callback.from_user.id
-    data = callback.data
-
-    # Назад
-    if data == "BACK":
-        if user_id in user_paths and user_paths[user_id]:
-            user_paths[user_id].pop()
-        current_level = get_menu_level(menu_json, user_paths[user_id])
-        keyboard = build_keyboard(current_level, user_paths[user_id])
-        await callback.message.edit_text(
-            format_breadcrumbs(user_paths[user_id]), reply_markup=keyboard
-        )
-        await callback.answer()
-        return
-
-    # Декодируем hash → путь
-    path_list = path_map.get(data)
-    if not path_list:
-        await callback.answer("❌ Ошибка пути", show_alert=True)
-        return
-
-    current_level = get_menu_level(menu_json, path_list)
-    if current_level is None:
-        await callback.answer("Ошибка пути", show_alert=True)
-        return
-
-    user_paths[user_id] = path_list
-
-    if is_final_value(current_level):
-        key = current_level
-        text = data_json.get(key, f"❌ Текст для '{key}' не найден.")
-        breadcrumb = format_breadcrumbs(path_list)
-        await callback.message.edit_text(
-            f"{breadcrumb}\n\n{text}",
-            reply_markup=build_keyboard({}, path_list)
-        )
+    # special root token
+    if data == 'menu:root':
+        parent_id = None
     else:
-        keyboard = build_keyboard(current_level, path_list)
-        await callback.message.edit_text(
-            format_breadcrumbs(path_list),
-            reply_markup=keyboard
-        )
+        node_id = int(data.split(':', 1)[1])
+        node = get_node(node_id)
 
-    await callback.answer()
+        if node is None:
+            await cb.answer('Узел не найден', show_alert=True)
+            return
+
+        # If node has a slug -> show item
+        if node['slug']:
+            item = get_item(node['slug'])
+            if item:
+                text = f"*{item['title']}*\n\n{item['content']}"
+                await cb.message.edit_text(text, parse_mode='Markdown')
+                return
+            else:
+                await cb.message.edit_text('Контент отсутствует. Админ может добавить его через /admin.')
+                return
+
+        # else show children
+        parent_id = node_id
+
+    # fetch children
+    children = get_children(parent_id)
+    if not children:
+        await cb.message.edit_text('Пустой раздел.')
+        return
+
+    # determine back button
+    if parent_id is None:
+        # we are in root → back is NOT needed
+        include_back = False
+        back_to = None
+    else:
+        # we are inside → show back button
+        include_back = True
+        parent_node = get_node(parent_id)
+        back_to = parent_node['parent_id'] if parent_node else None
+
+    markup = build_menu_markup(children, include_back=include_back, back_to=back_to)
+    await cb.message.edit_text('Выберите пункт:', reply_markup=markup)
+
 
