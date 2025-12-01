@@ -7,12 +7,17 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from db.db import get_children, get_node, get_item
+import re
+
+
 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def esc_md(text: str) -> str:
+    return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', text)
 # --------------------------- MENU MARKUP GENERATOR ---------------------------
 
 def build_menu_markup(nodes: List[sqlite3.Row], include_back: bool = False,
@@ -66,8 +71,9 @@ async def callback_menu(cb: types.CallbackQuery):
         if node['slug']:
             item = get_item(node['slug'])
             if item:
-                text = f"*{item['title']}*\n\n{item['content']}"
-                await cb.message.edit_text(text, parse_mode='Markdown')
+                text = f"<b>{item['title']}</b>\n\n{item['content']}"
+                # safe_text = esc_md(text)
+                await cb.message.edit_text(text, parse_mode='HTML')
                 return
             else:
                 await cb.message.edit_text('Контент отсутствует. Админ может добавить его через /admin.')

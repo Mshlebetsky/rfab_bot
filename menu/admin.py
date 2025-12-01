@@ -1,6 +1,4 @@
 from __future__ import annotations
-import sqlite3
-from typing import List, Optional, Tuple, Dict
 import logging
 from aiogram import types, Router
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -26,6 +24,7 @@ class AdminStates(StatesGroup):
     adding_item_content = State()
     editing_node_title = State()
     editing_item_content = State()
+    search_item = State()
 
 
 ADMIN_USER_IDS = {435946390}  # replace with actual Telegram user ids of admins
@@ -85,18 +84,10 @@ async def callback_admin(cb: types.CallbackQuery, state: FSMContext):
         await cb.message.edit_text('Импортирован menu.json')
         return
     if data == 'adm:manage_items':
-        # list items (first 30)
-        conn = get_conn()
-        cur = conn.cursor()
-        cur.execute('SELECT slug, title FROM items ORDER BY created_at DESC LIMIT 40')
-        rows = cur.fetchall()
-        conn.close()
-        kb = InlineKeyboardBuilder()
-        for r in rows:
-            kb.row(InlineKeyboardButton(f"{r['title']} ({r['slug']})", callback_data=f'adm:item:{r['slug']}'))
-        kb.row(InlineKeyboardButton('Добавить товар', callback_data='adm:item_add'))
-        await cb.message.edit_text('Управление товарами', reply_markup=kb)
+        await state.set_state(AdminStates.search_item)
+        await cb.message.edit_text("Введите часть названия итема (регистр учитывается)")
         return
+
 
     # node specific actions
     if data.startswith('adm:node:'):
@@ -125,9 +116,9 @@ async def callback_admin(cb: types.CallbackQuery, state: FSMContext):
             return
         text = f"Товар: {item['title']}\nslug: {item['slug']}\n\n{item['content'][:200]}..."
         kb = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton('✏️ Редактировать контент', callback_data=f'adm:item_edit:{slug}')],
-            [InlineKeyboardButton('🗑 Удалить товар', callback_data=f'adm:item_del:{slug}')],
-            [InlineKeyboardButton('Назад', callback_data='adm:manage_items')]
+            [InlineKeyboardButton(text='✏️ Редактировать контент', callback_data=f'adm:item_edit:{slug}')],
+            [InlineKeyboardButton(text='🗑 Удалить товар', callback_data=f'adm:item_del:{slug}')],
+            [InlineKeyboardButton(text='Назад', callback_data='adm:manage_items')]
         ])
         await cb.message.edit_text(text, reply_markup=kb)
         return
@@ -136,20 +127,21 @@ async def callback_admin(cb: types.CallbackQuery, state: FSMContext):
     if data.startswith('adm:node_add:'):
         parent_id = int(data.split(':', 2)[2])
         await state.update_data(admin_action='add_node', parent_id=parent_id)
-        await AdminStates.adding_category.set()
+        await state.set_state(AdminStates.adding_category)
         await cb.message.answer('Введите название новой подкатегории:')
         return
 
     if data == 'adm:add_root':
         await state.update_data(admin_action='add_node', parent_id=None)
-        await AdminStates.adding_category.set()
+        await state.set_state(AdminStates.adding_category)
         await cb.message.answer('Введите название новой root категории:')
         return
 
     if data.startswith('adm:node_rename:'):
         node_id = int(data.split(':', 2)[2])
         await state.update_data(admin_action='rename_node', node_id=node_id)
-        await AdminStates.editing_node_title.set()
+        await state.set_state(AdminStates.editing_node_title)
+
         await cb.message.answer('Введите новый заголовок для узла:')
         return
 
@@ -167,20 +159,22 @@ async def callback_admin(cb: types.CallbackQuery, state: FSMContext):
     if data.startswith('adm:node_setslug:'):
         node_id = int(data.split(':', 2)[2])
         await state.update_data(admin_action='set_slug', node_id=node_id)
-        await AdminStates.adding_item_slug.set()
+        await state.set_state(AdminStates.adding_item_slug)
+
         await cb.message.answer('Введите slug to привязать (например: exp_system). Введите пустую строку чтобы отвязать.')
         return
 
     if data == 'adm:item_add':
         await state.update_data(admin_action='add_item')
-        await AdminStates.adding_item_slug.set()
+        await state.set_state(AdminStates.adding_item_slug)
+
         await cb.message.answer('Введите slug для нового товара (латинскими, например: my_slug):')
         return
 
     if data.startswith('adm:item_edit:'):
         slug = data.split(':', 2)[2]
         await state.update_data(admin_action='edit_item', slug=slug)
-        await AdminStates.editing_item_content.set()
+        await state.set_state(AdminStates.editing_item_content)
         await cb.message.answer('Отправьте новый контент (Markdown) для товара:')
         return
 
@@ -285,3 +279,41 @@ async def process_edit_item_content(message: types.Message, state: FSMContext):
     conn.close()
     await state.clear()
     await message.answer('Контент товара обновлён')
+
+
+@admin_router.message(AdminStates.search_item)
+async def process_item_search(message: types.Message, state: FSMContext):
+    query = message.text.strip()
+
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT slug, title FROM items
+        WHERE slug LIKE ? COLLATE NOCASE
+           OR title LIKE ? COLLATE NOCASE
+        ORDER BY created_at DESC
+        LIMIT 50
+    """, (f"%{query}%", f"%{query}%"))
+    rows = cur.fetchall()
+    conn.close()
+
+    if not rows:
+        await message.answer("❌ Ничего не найдено. Введите другой запрос:")
+        return
+
+    kb = InlineKeyboardBuilder()
+
+    for r in rows:
+        kb.row(
+            InlineKeyboardButton(
+                text=f"{r['title']} ({r['slug']})",
+                callback_data=f"adm:item:{r['slug']}"
+            )
+        )
+
+    kb.row(
+        InlineKeyboardButton(text="🔍 Новый поиск", callback_data="adm:manage_items")
+    )
+
+    await state.clear()
+    await message.answer("Результаты поиска:", reply_markup=kb.as_markup())
