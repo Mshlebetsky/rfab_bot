@@ -175,7 +175,7 @@ async def callback_admin(cb: types.CallbackQuery, state: FSMContext):
         slug = data.split(':', 2)[2]
         await state.update_data(admin_action='edit_item', slug=slug)
         await state.set_state(AdminStates.editing_item_content)
-        await cb.message.answer('Отправьте новый контент (Markdown) для товара:')
+        await cb.message.answer('Отправьте новый контент (HTML) для товара:')
         return
 
     if data.startswith('adm:item_del:'):
