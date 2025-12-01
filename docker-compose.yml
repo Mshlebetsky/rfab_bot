@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  bot:
+    build: .
+    container_name: telegram_bot
+    restart: always
+    environment:
+      BOT_TOKEN: "${BOT_TOKEN}"
+    volumes:
+      - ./data:/app/data   # <-- СЮДА сохраняется menu_bot.db
+      - ./menu:/app/menu   # <-- Чтобы menu.json можно было менять без пересборки

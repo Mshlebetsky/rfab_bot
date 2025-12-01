@@ -4,7 +4,9 @@ import sqlite3
 from typing import List, Optional, Tuple, Dict
 import logging
 import os
-DB_PATH = 'db/menu_bot.db'
+# DB_PATH = 'db/menu_bot.db'
+DB_PATH = '/app/data/menu_bot.db'
+
 MENU_JSON_PATH = 'menu/menu.json'  # optional path for import
 
 
